@@ -110,11 +110,12 @@ namespace Gameplay
 
 		void StickCollectionController::processSortThreadState()
 		{
-			sort_state = SortState::NOT_SORTING;
-
-			if (sort_thread.joinable() && isCollectionSorted()) sort_thread.join();
+			if (sort_thread.joinable() && isCollectionSorted())
+			{
+				sort_thread.join();
+				sort_state = SortState::NOT_SORTING;
+			}
 		}
-
 
 		void StickCollectionController::resetSticksColor()
 		{
@@ -127,27 +128,17 @@ namespace Gameplay
 			number_of_array_access = 0;
 		}
 
-		void StickCollectionController::reset()
-		{
-			current_operation_delay = 0;
-			sort_state = SortState::NOT_SORTING;
-
-			if (sort_thread.joinable()) sort_thread.join();
-
-			shuffleSticks();
-			resetSticksColor();
-			resetVariables();
-		}
-
 		void StickCollectionController::sortElements(SortType sort_type)
 		{
 			current_operation_delay = collection_model->operation_delay;
 			this->sort_type = sort_type;
 			sort_state = SortState::SORTING;
+			color_delay = 0;
 
 			switch (sort_type)
 			{
 			case SortType::BUBBLE_SORT:
+				time_complexity = "O(n^2)";
 				sort_thread = std::thread(&StickCollectionController::processBubbleSort, this);
 				break;
 			}
@@ -162,7 +153,7 @@ namespace Gameplay
 
 				bool swapped = false;
 
-				for (int j = 0; j < sticks.size() - i; j++)
+				for (int j = 1; j < sticks.size() - i; j++)
 				{
 					if (sort_state == SortState::NOT_SORTING)
 						break;
@@ -176,7 +167,7 @@ namespace Gameplay
 
 					if (compareSticksByData(sticks[j], sticks[j-1]))
 					{
-						std::swap(sticks[j], sticks[j - 1]);
+						std::swap(sticks[j], sticks[j-1]);
 						swapped = true;
 					}
 
@@ -195,6 +186,8 @@ namespace Gameplay
 				if (!swapped)
 					break;
 			}
+
+			setCompletedColor();
 		}
 
 		bool StickCollectionController::compareSticksByData(const Stick* a, const Stick* b) const
@@ -202,10 +195,51 @@ namespace Gameplay
 			return a->data < b->data;
 		}
 
+		void StickCollectionController::setCompletedColor()
+		{
+			for (int i = 0; i < sticks.size(); i++)
+			{
+				if (sort_state == SortState::NOT_SORTING)
+					break;
+
+				sticks[i]->stick_view->setFillColor(collection_model->element_color);
+			}
+
+			for (int i = 0; i < sticks.size(); i++)
+			{
+				if (sort_state == SortState::NOT_SORTING)
+					break;
+
+				ServiceLocator::getInstance()->getSoundService()->playSound(SoundType::COMPARE_SFX);
+
+				sticks[i]->stick_view->setFillColor(collection_model->placement_position_element_color);
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(color_delay));
+			}
+
+			if (sort_state == SortState::SORTING)
+			{
+				ServiceLocator::getInstance()->getSoundService()->playSound(SoundType::WIN);
+			}
+		}
+
 		bool StickCollectionController::isCollectionSorted()
 		{
 			for (int i = 1; i < sticks.size(); i++) if (sticks[i] < sticks[i - 1]) return false;
 			return true;
+		}
+
+		void StickCollectionController::reset()
+		{
+			current_operation_delay = 0;
+			color_delay = 0;
+			sort_state = SortState::NOT_SORTING;
+
+			if (sort_thread.joinable()) sort_thread.join();
+
+			shuffleSticks();
+			resetSticksColor();
+			resetVariables();
 		}
 
 		void StickCollectionController::destroy()

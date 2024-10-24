@@ -159,4 +159,55 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\bubble_sort_button.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\insertion_sort_button.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\menu_button.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\menu_button_large.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\merge_sort_button.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\outscal_logo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\play_button.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\quick_sort_button.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\quit_button.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\radix_sort_button.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\selection_sort_button.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\sorting_bg.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\sounds\button_click_sound.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sounds\compare_sfx.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sounds\marimba-win-b-3-209679.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\fonts\bubbleBobble.ttf" />
+    <Font Include="assets\fonts\DS_DIGIB.TTF" />
+  </ItemGroup>
 </Project>
