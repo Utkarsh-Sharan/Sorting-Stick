@@ -141,6 +141,11 @@ namespace Gameplay
 				time_complexity = "O(n^2)";
 				sort_thread = std::thread(&StickCollectionController::processBubbleSort, this);
 				break;
+
+			case SortType::INSERTION_SORT:
+				time_complexity = "O(n^2)";
+				sort_thread = std::thread(&StickCollectionController::processInsertionSort, this);
+				break;
 			}
 		}
 
@@ -188,6 +193,11 @@ namespace Gameplay
 			}
 
 			setCompletedColor();
+		}
+
+		void StickCollectionController::processInsertionSort()
+		{
+
 		}
 
 		bool StickCollectionController::compareSticksByData(const Stick* a, const Stick* b) const
