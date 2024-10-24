@@ -41,6 +41,8 @@ namespace Gameplay
             void resetSticksColor();
             void resetVariables();
 
+            void processBubbleSort();
+
             void processSortThreadState();
 
             bool isCollectionSorted();

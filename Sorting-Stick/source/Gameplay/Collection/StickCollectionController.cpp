@@ -144,12 +144,17 @@ namespace Gameplay
 			current_operation_delay = collection_model->operation_delay;
 			this->sort_type = sort_type;
 
-			/*switch (sort_type)
+			switch (sort_type)
 			{
-			case Gameplay::Collection::SortType::BUBBLE_SORT:
+			case SortType::BUBBLE_SORT:
 				sort_thread = std::thread(&StickCollectionController::processBubbleSort, this);
 				break;
-			}*/
+			}
+		}
+
+		void StickCollectionController::processBubbleSort()
+		{
+
 		}
 
 		bool StickCollectionController::isCollectionSorted()
