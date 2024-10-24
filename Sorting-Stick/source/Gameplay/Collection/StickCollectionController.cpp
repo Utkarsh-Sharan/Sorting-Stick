@@ -13,6 +13,7 @@ namespace Gameplay
 		using namespace UI::UIElement;
 		using namespace Global;
 		using namespace Graphics;
+		using namespace Sound;
 
 		StickCollectionController::StickCollectionController()
 		{
@@ -107,13 +108,10 @@ namespace Gameplay
 			updateStickPosition();
 		}
 
-		bool StickCollectionController::compareSticksByData(const Stick* a, const Stick* b) const
-		{
-			return a->data < b->data;
-		}
-
 		void StickCollectionController::processSortThreadState()
 		{
+			sort_state = SortState::NOT_SORTING;
+
 			if (sort_thread.joinable() && isCollectionSorted()) sort_thread.join();
 		}
 
@@ -132,6 +130,8 @@ namespace Gameplay
 		void StickCollectionController::reset()
 		{
 			current_operation_delay = 0;
+			sort_state = SortState::NOT_SORTING;
+
 			if (sort_thread.joinable()) sort_thread.join();
 
 			shuffleSticks();
@@ -143,6 +143,7 @@ namespace Gameplay
 		{
 			current_operation_delay = collection_model->operation_delay;
 			this->sort_type = sort_type;
+			sort_state = SortState::SORTING;
 
 			switch (sort_type)
 			{
@@ -154,7 +155,51 @@ namespace Gameplay
 
 		void StickCollectionController::processBubbleSort()
 		{
+			for (int i = 0; i < sticks.size(); i++)
+			{
+				if (sort_state == SortState::NOT_SORTING)
+					break;
 
+				bool swapped = false;
+
+				for (int j = 0; j < sticks.size() - i; j++)
+				{
+					if (sort_state == SortState::NOT_SORTING)
+						break;
+
+					number_of_array_access += 2;
+					number_of_comparisons++;
+					ServiceLocator::getInstance()->getSoundService()->playSound(SoundType::COMPARE_SFX);
+
+					sticks[j - 1]->stick_view->setFillColor(collection_model->processing_element_color);
+					sticks[j]->stick_view->setFillColor(collection_model->processing_element_color);
+
+					if (compareSticksByData(sticks[j], sticks[j-1]))
+					{
+						std::swap(sticks[j], sticks[j - 1]);
+						swapped = true;
+					}
+
+					std::this_thread::sleep_for(std::chrono::milliseconds(current_operation_delay));
+
+					sticks[j - 1]->stick_view->setFillColor(collection_model->element_color);
+					sticks[j]->stick_view->setFillColor(collection_model->element_color);
+					updateStickPosition();
+				}
+
+				if (sticks.size() - i - 1 >= 0) 
+				{
+					sticks[sticks.size() - i - 1]->stick_view->setFillColor(collection_model->placement_position_element_color);
+				}
+
+				if (!swapped)
+					break;
+			}
+		}
+
+		bool StickCollectionController::compareSticksByData(const Stick* a, const Stick* b) const
+		{
+			return a->data < b->data;
 		}
 
 		bool StickCollectionController::isCollectionSorted()
