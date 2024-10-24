@@ -5,6 +5,7 @@
 #include "Event/EventService.h"
 #include "Global/Config.h"
 #include "Global/ServiceLocator.h"
+#include "Gameplay/Collection/StickCollectionController.h"
 
 namespace UI
 {
@@ -15,6 +16,7 @@ namespace UI
         using namespace UIElement;
         using namespace Sound;
         using namespace Graphics;
+        using namespace Gameplay::Collection;
 
         MainMenuUIController::MainMenuUIController()
         {
@@ -73,7 +75,7 @@ namespace UI
 
         void MainMenuUIController::registerButtonCallback()
         {
-            //bubble_sort_button->registerCallbackFuntion(std::bind(&MainMenuUIController::bubbleSortButtonCallback, this));
+            bubble_sort_button->registerCallbackFuntion(std::bind(&MainMenuUIController::bubbleSortButtonCallback, this));
             //insertion_sort_button->registerCallbackFuntion(std::bind(&MainMenuUIController::insertionSortButtonCallback, this));
             //selection_sort_button->registerCallbackFuntion(std::bind(&MainMenuUIController::selectionSortButtonCallback, this));
             //merge_sort_button->registerCallbackFuntion(std::bind(&MainMenuUIController::mergeSortButtonCallback, this));
@@ -84,7 +86,9 @@ namespace UI
 
         void MainMenuUIController::bubbleSortButtonCallback()
         {
+            GameService::setGameState(GameState::GAMEPLAY);
             ServiceLocator::getInstance()->getSoundService()->playSound(SoundType::BUTTON_CLICK);
+            ServiceLocator::getInstance()->getGameplayService()->sortElement(SortType::BUBBLE_SORT);
         }
 
         void MainMenuUIController::insertionSortButtonCallback()
