@@ -154,7 +154,7 @@ namespace Gameplay
 
 			case SortType::MERGE_SORT:
 				time_complexity = "O(nlog(n))";
-				sort_thread = std::thread(&StickCollectionController::processInPlaceMergeSort, this);
+				sort_thread = std::thread(&StickCollectionController::processMergeSort, this);
 				break;
 			}
 		}
@@ -367,6 +367,21 @@ namespace Gameplay
 				std::this_thread::sleep_for(std::chrono::milliseconds(current_operation_delay));
 				sticks[left - 1]->stick_view->setFillColor(collection_model->element_color);
 			}
+		}
+
+		void StickCollectionController::processMergeSort()
+		{
+
+		}
+
+		void StickCollectionController::mergeSort()
+		{
+
+		}
+
+		void StickCollectionController::merge()
+		{
+
 		}
 
 		bool StickCollectionController::compareSticksByData(const Stick* a, const Stick* b) const
