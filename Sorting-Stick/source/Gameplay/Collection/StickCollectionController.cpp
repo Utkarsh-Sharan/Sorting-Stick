@@ -151,6 +151,11 @@ namespace Gameplay
 				time_complexity = "O(n^2)";
 				sort_thread = std::thread(&StickCollectionController::processSelectionSort, this);
 				break;
+
+			case SortType::MERGE_SORT:
+				time_complexity = "O(nlog(n))";
+				sort_thread = std::thread(&StickCollectionController::processInPlaceMergeSort, this);
+				break;
 			}
 		}
 
@@ -295,6 +300,11 @@ namespace Gameplay
 
 			sticks[sticks.size() - 1]->stick_view->setFillColor(collection_model->placement_position_element_color);
 			setCompletedColor();
+		}
+
+		void StickCollectionController::processInPlaceMergeSort()
+		{
+
 		}
 
 		bool StickCollectionController::compareSticksByData(const Stick* a, const Stick* b) const

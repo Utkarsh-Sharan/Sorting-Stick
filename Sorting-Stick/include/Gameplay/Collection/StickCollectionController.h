@@ -47,6 +47,7 @@ namespace Gameplay
             void processBubbleSort();
             void processInsertionSort();
             void processSelectionSort();
+            void processInPlaceMergeSort();
 
             void processSortThreadState();
             void setCompletedColor();
