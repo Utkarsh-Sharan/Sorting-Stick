@@ -163,7 +163,7 @@ namespace Gameplay
 				break;
 
 			case SortType::RADIX_SORT:
-				time_complexity = "O(w'(n+k))";
+				time_complexity = "O(w*(n+k))";
 				sort_thread = std::thread(&StickCollectionController::processRadixSort, this);
 				break;
 			}
