@@ -519,7 +519,20 @@ namespace Gameplay
 
 		void StickCollectionController::processRadixSort()
 		{
-			
+			radixSort();
+			setCompletedColor();
+		}
+
+		void StickCollectionController::radixSort()
+		{
+			int maxElement = INT_MIN;
+			const int size = sticks.size();
+
+			for (int i = 0; i < size; ++i)
+				maxElement = std::max(sticks[i]->data, maxElement);
+
+			for (int exponent = 1; maxElement / exponent > 0; exponent *= 10)
+				countSort(exponent);
 		}
 
 		void StickCollectionController::countSort(int exponent)
