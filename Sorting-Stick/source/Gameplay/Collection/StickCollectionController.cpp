@@ -133,7 +133,7 @@ namespace Gameplay
 			current_operation_delay = collection_model->operation_delay;
 			this->sort_type = sort_type;
 			sort_state = SortState::SORTING;
-			color_delay = 0;
+			color_delay = 40;
 
 			switch (sort_type)
 			{
@@ -457,6 +457,40 @@ namespace Gameplay
 		void StickCollectionController::processQuickSort()
 		{
 
+		}
+
+		int StickCollectionController::partition(int left, int right)
+		{
+			int i = left - 1;
+			sticks[right]->stick_view->setFillColor(collection_model->selected_element_color);
+
+			for (int j = left; j < right; ++j)
+			{
+				sticks[j]->stick_view->setFillColor(collection_model->processing_element_color);
+
+				number_of_array_access += 2;
+				number_of_comparisons++;
+
+				if (compareSticksByData(sticks[j], sticks[right]))
+				{
+					++i;
+					std::swap(sticks[i], sticks[j]);
+
+					number_of_array_access += 3;
+					ServiceLocator::getInstance()->getSoundService()->playSound(SoundType::COMPARE_SFX);
+
+					updateStickPosition();
+					std::this_thread::sleep_for(std::chrono::milliseconds(current_operation_delay));
+				}
+
+				sticks[j]->stick_view->setFillColor(collection_model->element_color);
+			}
+
+			std::swap(sticks[i + 1], sticks[right]);
+			number_of_array_access += 3;
+
+			updateStickPosition();
+			return i + 1;
 		}
 
 		bool StickCollectionController::compareSticksByData(const Stick* a, const Stick* b) const
