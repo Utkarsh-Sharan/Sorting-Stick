@@ -156,6 +156,11 @@ namespace Gameplay
 				time_complexity = "O(nlog(n))";
 				sort_thread = std::thread(&StickCollectionController::processMergeSort, this);
 				break;
+
+			case SortType::QUICK_SORT:
+				time_complexity = "O(nlog(n))";
+				sort_thread = std::thread(&StickCollectionController::processQuickSort, this);
+				break;
 			}
 		}
 
@@ -447,6 +452,11 @@ namespace Gameplay
 
 				k++;
 			}
+		}
+
+		void StickCollectionController::processQuickSort()
+		{
+
 		}
 
 		bool StickCollectionController::compareSticksByData(const Stick* a, const Stick* b) const
