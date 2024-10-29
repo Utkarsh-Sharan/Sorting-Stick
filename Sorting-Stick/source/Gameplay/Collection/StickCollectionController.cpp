@@ -456,7 +456,26 @@ namespace Gameplay
 
 		void StickCollectionController::processQuickSort()
 		{
+			quickSort(0, sticks.size() - 1);
 
+			setCompletedColor();
+		}
+
+		void StickCollectionController::quickSort(int left, int right)
+		{
+			if (left < right)
+			{
+				int pivot_index = partition(left, right);
+
+				quickSort(left, pivot_index - 1);
+				quickSort(pivot_index + 1, right);
+
+				for (int i = left; i <= right; i++)
+				{
+					sticks[i]->stick_view->setFillColor(collection_model->placement_position_element_color);
+					updateStickPosition();
+				}
+			}
 		}
 
 		int StickCollectionController::partition(int left, int right)
