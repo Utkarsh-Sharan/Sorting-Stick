@@ -161,6 +161,11 @@ namespace Gameplay
 				time_complexity = "O(nlog(n))";
 				sort_thread = std::thread(&StickCollectionController::processQuickSort, this);
 				break;
+
+			case SortType::RADIX_SORT:
+				time_complexity = "O(w'(n+k))";
+				sort_thread = std::thread(&StickCollectionController::processRadixSort, this);
+				break;
 			}
 		}
 
@@ -510,6 +515,11 @@ namespace Gameplay
 
 			updateStickPosition();
 			return i + 1;
+		}
+
+		void StickCollectionController::processRadixSort()
+		{
+
 		}
 
 		bool StickCollectionController::compareSticksByData(const Stick* a, const Stick* b) const

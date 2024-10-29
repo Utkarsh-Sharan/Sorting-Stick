@@ -80,7 +80,7 @@ namespace UI
             selection_sort_button->registerCallbackFuntion(std::bind(&MainMenuUIController::selectionSortButtonCallback, this));
             merge_sort_button->registerCallbackFuntion(std::bind(&MainMenuUIController::mergeSortButtonCallback, this));
             quick_sort_button->registerCallbackFuntion(std::bind(&MainMenuUIController::quickSortButtonCallback, this));
-            //radix_sort_button->registerCallbackFuntion(std::bind(&MainMenuUIController::radixSortButtonCallback, this));
+            radix_sort_button->registerCallbackFuntion(std::bind(&MainMenuUIController::radixSortButtonCallback, this));
             quit_button->registerCallbackFuntion(std::bind(&MainMenuUIController::quitButtonCallback, this));
         }
 
@@ -121,7 +121,9 @@ namespace UI
 
         void MainMenuUIController::radixSortButtonCallback()
         {
+            GameService::setGameState(GameState::GAMEPLAY);
             ServiceLocator::getInstance()->getSoundService()->playSound(SoundType::BUTTON_CLICK);
+            ServiceLocator::getInstance()->getGameplayService()->sortElement(SortType::RADIX_SORT);
         }
 
         void MainMenuUIController::quitButtonCallback()
